@@ -64,6 +64,8 @@
         </div>
     </form>
 
+    <a asp-action="Index">Back to List</a>
+
     <h2>Stock Information</h2>
     <table class="table">
         <thead>
@@ -92,7 +94,6 @@
     </table>
 </div>
 <div>
-    <a asp-controller="Stocks" asp-action="Create" asp-route-productId="@Model.Id">Create Stock</a> |
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Stocks" asp-action="Create" asp-route-productId="@Model.Id">Create Stock</a>
+@*     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> | *@
 </div>

@@ -139,7 +139,7 @@ namespace CRUDPractice.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.ProductId = stock.ProductId;
             return View(stock);
         }
 
@@ -149,13 +149,15 @@ namespace CRUDPractice.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var stock = await _context.Stocks.FindAsync(id);
+            int productId = stock.ProductId;
             if (stock != null)
             {
                 _context.Stocks.Remove(stock);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Products", new { id = productId });
         }
 
         private bool StockExists(int id)
