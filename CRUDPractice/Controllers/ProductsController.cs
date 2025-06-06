@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CRUDPractice.Data;
 using CRUDPractice.Models;
+using CRUDPractice.Models.ViewModels;
 
 namespace CRUDPractice.Controllers
 {
@@ -29,12 +30,18 @@ namespace CRUDPractice.Controllers
         //    return View(products);
         //}
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(ProductViewModel productViewModel)
         {
             var products = await _context.Products
                 .Include(p => p.Stocks)
                 .ToListAsync();
-            switch (sortOrder)
+
+            if (!string.IsNullOrEmpty(productViewModel.SearchString)) 
+            {
+                products = products.Where(p => p.Name.Contains(productViewModel.SearchString)).ToList();
+            }
+
+            switch (productViewModel.SortOrder)
             {
                 case "Name":
                     products = products.OrderBy(s => s.Name).ToList();
@@ -54,7 +61,8 @@ namespace CRUDPractice.Controllers
                     products = products.OrderBy(s => s.Id).ToList();
                     break;
             }
-            return View(products);
+            productViewModel.Products = products;
+            return View(productViewModel);
         }
 
         // GET: Products/Details/5
